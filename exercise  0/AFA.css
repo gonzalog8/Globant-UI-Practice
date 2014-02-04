@@ -1,0 +1,53 @@
+.center-wrapper{
+	margin:0 auto;
+	width: 950px;
+}
+header{
+	width: 950px;
+}
+.sidebar{
+	float: left;
+	background: rgb(242, 213, 160);
+	width: 350px;
+	height: 600px;
+}
+.club-list-item{
+	list-style: none;
+}
+.club-list-item a{
+	text-decoration: none;
+	color: rgb(64, 60, 60);
+	font-weight: bold;	
+}
+.club-list-item a:hover{
+	color: rgb(61, 61, 234);
+}
+
+.main-secction{
+	float: left;
+	height: 600px;
+	width: 600px;
+	background-color: silver;
+
+}
+footer{
+	clear: both;
+	width: 950px;
+	height: 30px;
+	background: rgb(110, 179, 110);
+	text-align: center;
+	padding-top: 10px;
+}	
+h3{
+	padding-left: 10px;
+}
+
+table{
+	margin-left: 20px;
+	border: 1px gray solid;
+	border-collapse: collapse;
+}
+table td{
+	border: 1px solid gray;
+	padding: 5px;
+}
