@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Exercise 1 - Javascript Intro and jQuery</title>
+	<link rel="stylesheet" type="text/css" href="exercise1.css">
+</head>
+<body>
+	<div id="sectionContainer">
+		<section id="mainSection" class="hidden">
+			<p>Hello World!</p>
+			<textarea id="txtBox">
+			</textarea>
+		</section>
+	</div>
+	
+	<article id="tweetsResponses">
+
+	</article>
+	<button id="getGreeting">Get Greeting</button>
+	<button id="getTweets">Get Tweets</button>
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.js"></script>
+	<script type="text/javascript">
+		function highLightName($responseSpan){
+			var txtContent
+				,greeting
+				,name
+				,$highLightedName = $("<mark>");
+
+			//Spliting the content in two, greeting and name.
+			txtContent = $responseSpan.text();
+			greeting = txtContent.substring(0, 8);
+			name = txtContent.substring(8);
+
+			//overwriting the response. Plain text for the greeting, highlight for the name.
+			$responseSpan.text(greeting);
+			$responseSpan.append($highLightedName.text(name))
+
+		}
+
+		$(document).ready(function(){
+			//Showing the mainSection using jquery and removing class to avoid possible conflicts
+			$("#mainSection").fadeIn(500).removeClass("hidden");
+			$("#txtBox").focus();
+
+			$("#getGreeting").on("click", function(){
+				$.ajax({ url: "http://bootcamp.aws.af.cm/welcome/gonzalo"})
+					.success( function(data){
+						var $responseSpan = $("<span>" + data.response + "</span>");
+						console.log("getGreeting success");
+
+						$("#mainSection").append("<br/>").append($responseSpan);
+						highLightName($responseSpan);
+					})
+					.fail(function(err){
+						console.log("getGreeting fail");
+						$("#mainSection").append("<br/><span class='err-msg'>" + err + "</span>");
+					});
+			});
+
+
+			$("#getTweets").on("click", function(){
+				//Clearing old data and showing friendly message while retrieving tweets
+				$("#tweetsResponses").empty()
+									 .append("<spand> Loading tweets.. </span>");
+
+				//Requesting new data
+				$.ajax({ url: "http://tweetproxy.ap01.aws.af.cm/search"
+			           ,data: {q : 'html5'}
+			           ,dataType: 'jsonp'
+			       })
+					.success( function(data){
+						var twtsLength
+							,$tweetsResponses = $("#tweetsResponses");
+
+						
+						console.log("getTweets success");
+						twtsLength = data.statuses.length;
+						
+						//Removing message, and adding the new data to the container.
+						$tweetsResponses.empty();
+						
+						for(var i=0; i<twtsLength; i++){
+							var $eachTweet = $("<div class='eachTweet'>");
+							$eachTweet.append("<strong> Tweeted by: </strong>" )
+							          .append("<span> " + data.statuses[i].user.name + " </span><br />")
+							          .append("<strong> Tweet text: </strong>" )
+							          .append("<span> " + data.statuses[i].text + " </span><br />")
+							          .append("<strong> Tweeted on: </strong>" )
+							          .append("<span> " + data.statuses[i].created_at + " </span><br />")
+							          .append("<strong> User profile img: </strong>" )
+							          .append("<span> " + data.statuses[i].user.profile_image_url + " </span><br />")
+							          .append("<hr />");
+
+							$tweetsResponses.append($eachTweet);
+						}
+
+					})
+					.fail(function(err){
+						console.log("getTweets fail");
+						//Removing old message, and printing the request fail message.
+						$("#tweetsResponses").empty()
+									 		 .append("<spand> Request Fail </span><br />")
+									 		 .append("<strong> Status: </strong>")
+									 		 .append("<span> " + err.status + " </span><br />")
+									 		 .append("<strong> Error Message: </strong>")
+									 		 .append("<span> " + err.statusText + " </span><br />");
+					});
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+section{
+	text-align: center;
+}
+#sectionContainer{
+	height: 200px;
+	width: 25%;
+	float: left;
+}
+#tweetsResponses{
+	background-color: silver;
+	width: 75%;
+	height: 600px;
+	float: left;
+	overflow: auto;
+}
+.hidden{
+	display: none;
+}
+
+.err-msg{
+	color: red;
+}
+
+.highlight{
+	color: blue;
+}
